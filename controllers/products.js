@@ -15,6 +15,13 @@ exports.cartPage = (req, res, next) => {
   })
 }
 
+exports.ordersPage = (req, res, next) => {
+  res.render('shop/orders', {
+    path: '/orders',
+    pageTitle: 'Orders'
+  })
+}
+
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
     res.render('shop/product-list', {
