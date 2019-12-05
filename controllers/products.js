@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Cart = require('../models/cart')
 
 
 exports.indexPage = (req, res, next) => {
@@ -17,7 +18,10 @@ exports.cartPage = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  console.log(prodId);
+  Product.fetchOne(prodId, (product) => {
+    Cart.addProduct(prodId, product.price);
+  })
+  res.redirect('/cart');
 }
 
 exports.ordersPage = (req, res, next) => {
