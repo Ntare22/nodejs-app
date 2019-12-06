@@ -1,9 +1,10 @@
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-  res.render('admin/add-product', {
+  res.render('admin/edit-product', {
     pageTitle: 'Add Product',
-    path: '/admin/add-product'
+    path: '/admin/add-product',
+    editing: false
   })
 };
 
@@ -15,6 +16,39 @@ exports.getAdminProducts = (req, res, next) => {
       pageTitle: 'Admin Products'
     });
   });
+}
+
+exports.getEditProduct = (req, res, next) => {
+  const editMode = req.query.edit;
+  if (!editMode) {
+    return res.redirect('/');
+  }
+  const prodId = req.params.productId;
+  Product.fetchOne(prodId, product => {
+    if (!product) {
+      return res.redirect('/');
+    }
+    res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: editMode,
+      product: product
+    })
+  })
+};
+
+exports.postEditProduct = (req, res, next) => {
+  const editedProdId = req.params.productId;
+  Product.fetchOne(editedProdId, product => {
+    if (product) {
+      product.title = req.body.title;
+      product.imageUrl = req.body.imageUrl;
+      product.price = req.body.price;
+      product.description = req.body.description;
+    } else {
+      return res.redirect('/not-found')
+    }
+  })
 }
 
 exports.postAddProduct = (req, res, next) => {

@@ -23,16 +23,21 @@ const getProductsFromFile = (cb) => {
 // this class containing two methods, one to save a new product 
 // and another to display all the products
 module.exports = class Product {
-  constructor(title, imageUrl, price, description) {
+  constructor(id, title, imageUrl, price, description) {
+    this.id = id;
     this.title = title;
-    this.imageUrl = imageUrl,
-    this.price = price,
-    this.description = description
+    this.imageUrl = imageUrl;
+    this.price = price;
+    this.description = description;
   }
 
   save() {
-    this.id = Math.random().toString();
     getProductsFromFile(products => {
+      if (this.id) {
+        const existingProductIndex = products.findIndex(prod => prod.id === this.id);
+        const updatedProducts = [...products];
+      }
+      this.id = Math.random().toString();
       products.push(this);
       fs.writeFile(p, JSON.stringify(products), (err) => {
         console.log(err);
