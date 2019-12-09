@@ -37,6 +37,14 @@ exports.postCart = (req, res, next) => {
   res.redirect('/cart');
 }
 
+exports.postCartDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.fetchOne(prodId, product => {
+    Cart.deleteProduct(prodId, product.price);
+    res.redirect('/cart');    
+  })
+}
+
 exports.ordersPage = (req, res, next) => {
   res.render('shop/orders', {
     path: '/orders',
