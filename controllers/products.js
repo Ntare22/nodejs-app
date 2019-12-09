@@ -10,10 +10,13 @@ exports.indexPage = (req, res, next) => {
 }
 
 exports.cartPage = (req, res, next) => {
-  res.render('shop/cart', {
-    path: '/cart',
-    pageTitle: 'Cart'
+  Cart.getCart(cart => {
+    res.render('shop/cart', {
+      path: '/cart',
+      pageTitle: 'Cart'
+    })
   })
+  
 }
 
 exports.postCart = (req, res, next) => {
